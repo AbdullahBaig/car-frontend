@@ -26,11 +26,19 @@ import {
     MenuButton,
     MenuList,
     MenuItem,
-    Center, Breadcrumb, BreadcrumbItem, BreadcrumbLink, ListItem, List, Icon, UnorderedList
+    Center, Breadcrumb, BreadcrumbItem, BreadcrumbLink, ListItem, List, Icon, UnorderedList,
+    Modal,
+    ModalOverlay,
+    ModalContent,
+    ModalBody,
+    ModalCloseButton,
+    useDisclosure,
 } from '@chakra-ui/react';
 import '../styles//global.css';
 import LoaderSpinner from "../components/LoaderSpinner"
-
+import Slider from 'react-slick';
+import 'slick-carousel/slick/slick.css';
+import 'slick-carousel/slick/slick-theme.css';
 import {ChevronDownIcon, ChevronRightIcon} from "@chakra-ui/icons";
 import {FaMinus, FaPlus} from "react-icons/fa";
 import Product from "./Product";
@@ -47,6 +55,18 @@ import CheckFitModal from './CheckFitModal';
 //     addGarageToCookie
 // } from "./utility/cookies";
 const ProductPage = () => {
+    const { isOpen, onOpen, onClose } = useDisclosure();
+    const [currentImage, setCurrentImage] = useState(0);
+    const settings = {
+        dots: true,
+        infinite: true,
+        speed: 500,
+        slidesToShow: 1,
+        slidesToScroll: 1,
+        afterChange: (current) => setCurrentImage(current),
+    };
+
+
     const [selectedVehicle, setSelectedVehicle] = useState([]);
     useEffect(() => {
         const vehicle = getSelectedGarageFromCookie();
@@ -214,15 +234,63 @@ const ProductPage = () => {
         <Box className="pp-productDetail-main-box">
             <Flex className="pp-productDetail-innerbox" >
                 <Box className="pp-box1" display="flex" flexDirection="column">
+                    {/*<Box mb={4}>*/}
+                    {/*    {product.images &&*/}
+                    {/*        Array.isArray(JSON.parse(product.images)) &&*/}
+                    {/*        JSON.parse(product.images).length > 0 && (*/}
+                    {/*            <Image*/}
+                    {/*                className="pp-box1-img"*/}
+                    {/*                src={JSON.parse(product.images)[0].image1}*/}
+                    {/*                alt="Image 1"*/}
+                    {/*            />*/}
+                    {/*        )}*/}
+                    {/*</Box>*/}
                     <Box mb={4}>
                         {product.images &&
                             Array.isArray(JSON.parse(product.images)) &&
                             JSON.parse(product.images).length > 0 && (
-                                <Image
-                                    className="pp-box1-img"
-                                    src={JSON.parse(product.images)[0].image1}
-                                    alt="Image 1"
-                                />
+                                <>
+                                    <Image
+                                        className="pp-box1-img"
+                                        src={JSON.parse(product.images)[0].image1}
+                                        alt="Image 1"
+                                        onClick={onOpen}
+                                        cursor="pointer"
+                                    />
+                                    <Modal isOpen={isOpen} onClose={onClose} size="xl">
+                                        <ModalOverlay />
+                                        <ModalContent
+                                            backgroundColor="rgba(255, 255, 255, 0.5)"
+                                            backdropFilter="blur(5px)"
+                                            borderRadius="10px"
+                                            overflow="hidden"
+                                            maxH="100vh"
+                                            height="100vh"
+                                            maxW="100%"
+                                            mx="auto"
+                                            textAlign="center"
+                                            p={0}
+                                        >
+                                            <ModalCloseButton />
+                                            <ModalBody p={0}>
+                                                <Slider {...settings} initialSlide={currentImage}>
+                                                    {JSON.parse(product.images).map((image, index) => (
+                                                        <Image
+                                                            key={index}
+                                                            src={image.image1}
+                                                            alt={`Image ${index + 1}`}
+                                                            h="300px"
+                                                            mx="auto"
+                                                            objectFit="contain"
+                                                            height="400px"
+                                                            marginTop="100px"
+                                                        />
+                                                    ))}
+                                                </Slider>
+                                            </ModalBody>
+                                        </ModalContent>
+                                    </Modal>
+                                </>
                             )}
                     </Box>
                     <Box display="flex" mb={4}>

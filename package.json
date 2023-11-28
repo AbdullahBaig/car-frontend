@@ -16,7 +16,8 @@
     "@emotion/styled": "^11.11.0",
     "@stripe/react-stripe-js": "^2.3.2",
     "@stripe/stripe-js": "^2.1.11",
-    "axios": "^1.6.0",
+    "axios": "^1.6.2",
+    "cors": "^2.8.5",
     "countries-list": "^3.0.6",
     "framer-motion": "^10.16.4",
     "js-cookie": "^3.0.5",
@@ -26,7 +27,9 @@
     "react-icons": "^4.11.0",
     "react-responsive-carousel": "^3.2.23",
     "react-select": "^5.8.0",
-    "react-spinners": "^0.13.8"
+    "react-slick": "^0.29.0",
+    "react-spinners": "^0.13.8",
+    "slick-carousel": "^1.8.1"
   },
   "devDependencies": {
     "@types/node": "^20",
